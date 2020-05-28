@@ -1,1 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title>Clocker</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <style>
+  	body{
+    	background-color: #4c4c4c;
+        color: #4caf50;
+        height: 100vh;
+        margin: 0;
+    }
+    hr{
+    	background-color: #4caf50;
+    }
+    .jt-wrap{
+    	min-height: 100%;
+    }
+    .jt-bl{
+    	border-left: 3px solid #4caf50;
+    }
+    .jt-bb{
+    	border-bottom: 1px solid #4caf50;
+    }
+    .container{
+    	background-color: #4caf5055;
+        border: 2px solid #4caf50;
+        border-radius: 20px;
+        margin-top: 30px;
+        box-shadow: 0 0 8px rgba(0,0,0,.8);
+    }
+  	.action-btn{
+        background-color: #4caf50;
+        border: 3px solid #4caf50;
+        border-radius: 15px;
+        margin: 0 20px;
+        box-shadow: 0 1px 5px rgba(0,0,0,.3);
+        margin-top: 60px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+  	.action-btn:hover{
+        background-color: #5dbf61;
+        box-shadow: 0 1px 5px rgba(0,0,0,.6);
+    }
+    .action-btn h1{
+    	color: #f1f1f1;
+        text-shadow: 0px 0px 5px #4caf50;
+        font-weight: bold;
+        display: block;
+        text-align: center;
+        padding: 50px 0;
+    }
+    .jt-timer{
+    	min-height: 100%;
+        text-align: center;
+    }
+    .jt-history{
+    	text-align: left;
+        width: 100%;
+    
+    }
+    .jt-history div{
+    	display: block;
+    	padding: 20px 15px;
+        font-size: 20px;
+        border-bottom: 1px solid #4caf50;
+        width: 100%;
+        background-color: #555;
+    }
+    .jt-history div small{
+    	color: #0f0;
+    }
+    #ts,.text-bold{
+    	font-weight: bold;
+    }
+    .hide{
+        display: none!important;
+    }
+    .txt-jt,.txt-jt:hover{
+        font-weight: bold;
+        color: #4caf50;
+    }
+  </style>
+</head>
+<body id="body">
 
+<div class="container" id="cnt">
+  	<div class="row jt-wrap">
+  		<div class="col-md-12 jt-timer">
+    		<h1>Tiempo</h1>
+            <hr/>
+            <h1 class="text-bold display-2"><span id="m">00</span>:<span id="s">00</span></h1>
+            <hr/>
+            <h2><span style="color: #4caf50;">+</span><span id="ts" style="color: #4caf50;">0</span> Segundos</h2>
+            <input type="hidden" id="seconds" value="120">
+            <input type="hidden" id="cMin" value="0">
+            <input type="hidden" id="cSec" value="0">
+            <input type="hidden" id="cSum" value="0">
+            <input type="hidden" id="timerStatus" value="0">
+            
+			<div id="action" onclick="start()" class="action-btn"><h1>Iniciar</h1></div>
+    	</div>
+  		<div class="col-md-4 jt-bl text-center px-0 hide">
+        	<h2 class="py-3 jt-bb mb-0">Historial</h2>
+            <div class="jt-history">
+            	<div class="d-flex justify-content-between"><span>01:21</span><small>(+39s)</small></div>
+            	<div class="d-flex justify-content-between"><span>01:00</span><small>(+59s)</small></div>
+            </div>
+        </div>
+  	</div>
+</div>
+<h4 class="text-center mt-2">Desarrollado por <a href="https://www.instagram.com/JaviertINC" target="_blank" class="txt-jt">@JaviertINC</span></h4>
+
+<script>
+function start(){
+    obj = document.getElementById('body');
+    obj.style.backgroundColor = (obj.style.backgroundColor == '#4c4c4c') ? 'none' : '#4c4c4c';
+    obj = document.getElementById('cnt');
+    obj.style.backgroundColor = (obj.style.backgroundColor == '#4caf5055') ? 'none' : '#4caf5055';
+    $("#action h1").text("Detener");
+    $("#action").attr("onclick","stop()");
+    document.getElementById("timerStatus").value = 0;
+    var cSum = document.getElementById("cSum").value;
+    startTimer(parseInt(document.getElementById("seconds").value) + parseInt(cSum));
+}
+function stop(){
+    document.getElementById("timerStatus").value = 1;
+
+    $("#action h1").text("Renaudar");
+    $("#action").attr("onclick","start()");
+
+    updateSum();
+    resetTimer();
+}
+function updateSum(){
+    var cMin = document.getElementById("cMin").value;
+    var cSec = document.getElementById("cSec").value;
+
+    var tmp = (parseInt(60) * parseInt(cMin)) + parseInt(cSec);
+
+    document.getElementById("cSum").value = tmp;
+    document.getElementById("ts").innerText = tmp;
+}
+
+function resetTimer(){
+    document.getElementById("m").innerText = fix_num(0);
+    document.getElementById("s").innerText = fix_num(0);
+
+}
+
+function startTimer(duration) {
+    var timer = duration, minutes, seconds;
+    var time_out = 0;
+    setInterval(function () {
+        if(minutes == 0 && seconds == 0){
+            if(time_out == 0){
+                stop();
+                obj = document.getElementById('body');
+                obj.style.backgroundColor = (obj.style.backgroundColor == '#c00') ? 'none' : '#c00';
+                obj = document.getElementById('cnt');
+                obj.style.backgroundColor = (obj.style.backgroundColor == '#4c4c4c') ? 'none' : '#4c4c4c';
+                alert("Se agotó el tiempo");
+                time_out = 1;
+                timer = duration;
+            }
+        }else{
+            if(document.getElementById("timerStatus").value == "0"){
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                document.getElementById("m").innerText = fix_num(minutes);
+                document.getElementById("s").innerText = fix_num(seconds);
+                document.getElementById("cMin").value = minutes;
+                document.getElementById("cSec").value = seconds;
+
+                if (--timer < 0) {
+                    timer = duration;
+                    time_out = 0;
+                }
+            }else{
+                minutes = 0;
+                seconds = 0;
+                time_out = 1;
+            }
+        }
+    }, 1000);
+}
+
+
+
+function fix_num(num){
+    switch(num){
+        case 0:
+            return "00";
+        break;
+        case 1:
+            return "01";
+        break;
+        case 2:
+            return "02";
+        break;
+        case 3:
+            return "03";
+        break;
+        case 4:
+            return "04";
+        break;
+        case 5:
+            return "05";
+        break;
+        case 6:
+            return "06";
+        break;
+        case 7:
+            return "07";
+        break;
+        case 8:
+            return "08";
+        break;
+        case 9:
+            return "09";
+        break;
+        default:
+            return num;
+        break;
+    }
+}
+</script>
+
+</body>
+</html>
