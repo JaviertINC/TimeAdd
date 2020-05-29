@@ -1,1 +1,77 @@
-
+  	body{
+    	background-color: #4c4c4c;
+        color: #4caf50;
+        height: 100vh;
+        margin: 0;
+    }
+    hr{
+    	background-color: #4caf50;
+    }
+    .jt-wrap{
+    	min-height: 100%;
+    }
+    .jt-bl{
+    	border-left: 3px solid #4caf50;
+    }
+    .jt-bb{
+    	border-bottom: 1px solid #4caf50;
+    }
+    .container{
+    	background-color: #4caf5055;
+        border: 2px solid #4caf50;
+        border-radius: 20px;
+        margin-top: 30px;
+        box-shadow: 0 0 8px rgba(0,0,0,.8);
+    }
+  	.action-btn{
+        background-color: #4caf50;
+        border: 3px solid #4caf50;
+        border-radius: 15px;
+        margin: 0 20px;
+        box-shadow: 0 1px 5px rgba(0,0,0,.3);
+        margin-top: 60px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+  	.action-btn:hover{
+        background-color: #5dbf61;
+        box-shadow: 0 1px 5px rgba(0,0,0,.6);
+    }
+    .action-btn h1{
+    	color: #f1f1f1;
+        text-shadow: 0px 0px 5px #4caf50;
+        font-weight: bold;
+        display: block;
+        text-align: center;
+        padding: 50px 0;
+    }
+    .jt-timer{
+    	min-height: 100%;
+        text-align: center;
+    }
+    .jt-history{
+    	text-align: left;
+        width: 100%;
+    
+    }
+    .jt-history div{
+    	display: block;
+    	padding: 20px 15px;
+        font-size: 20px;
+        border-bottom: 1px solid #4caf50;
+        width: 100%;
+        background-color: #555;
+    }
+    .jt-history div small{
+    	color: #0f0;
+    }
+    #ts,.text-bold{
+    	font-weight: bold;
+    }
+    .hide{
+        display: none!important;
+    }
+    .txt-jt,.txt-jt:hover{
+        font-weight: bold;
+        color: #4caf50;
+    }
